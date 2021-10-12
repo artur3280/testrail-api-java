@@ -1,6 +1,5 @@
 package qa.tools.testraill.requests;
 
-import com.google.gson.reflect.TypeToken;
 import lombok.NonNull;
 import qa.tools.testraill.core.Requester;
 import qa.tools.testraill.models.sections.Section;

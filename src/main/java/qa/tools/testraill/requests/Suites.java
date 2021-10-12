@@ -1,6 +1,6 @@
 package qa.tools.testraill.requests;
 
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NonNull;
 import qa.tools.testraill.core.Requester;
 import qa.tools.testraill.models.suites.Suite;
@@ -46,7 +46,7 @@ public class Suites {
         private static final String REST_PATH = "get_suites/%s";
 
         public List(@NonNull Integer projectId) {
-            super("GET", String.format(REST_PATH, projectId), new TypeToken<java.util.List<Suite>>() {
+            super("GET", String.format(REST_PATH, projectId), new TypeReference<java.util.List<Suite>>() {
             });
         }
 

@@ -1,6 +1,6 @@
 package qa.tools.testraill.requests;
 
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.type.TypeReference;
 import qa.tools.testraill.core.Requester;
 import qa.tools.testraill.models.fields.CaseField;
 
@@ -13,7 +13,7 @@ public class CaseFields {
         private static final String REST_PATH = "get_case_fields";
 
         private List() {
-            super("GET", REST_PATH, new TypeToken<java.util.List<CaseField>>(){});
+            super("GET", REST_PATH, new TypeReference<java.util.List<CaseField>>(){});
         }
     }
 }

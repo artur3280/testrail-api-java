@@ -2,9 +2,8 @@ package qa.tools.testraill.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import lombok.NonNull;
 import qa.tools.testraill.TestRail;
 import qa.tools.testraill.core.internal.UrlConnectionFactory;
@@ -19,7 +18,7 @@ public abstract class Requester<T> {
     private final String method;
     private final String restPath;
     private final Class<? extends T> responseClass;
-    private final TypeToken<? extends T> responseType;
+    private final TypeReference<? extends T> responseType;
     private static final UrlConnectionFactory DEFAULT_URL_CONNECTION_FACTORY = new UrlConnectionFactory();
     private UrlConnectionFactory urlConnectionFactory = DEFAULT_URL_CONNECTION_FACTORY;
     private static final ObjectMapper JSON = new ObjectMapper()
@@ -29,7 +28,7 @@ public abstract class Requester<T> {
             .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-    private Requester(@NonNull final String method, @NonNull final String restPath, final Class<? extends T> responseClass, final TypeToken<? extends T> responseType) {
+    private Requester(@NonNull final String method, @NonNull final String restPath, final Class<? extends T> responseClass, final TypeReference<? extends T> responseType) {
         if (method.isEmpty()) {
             throw new NullPointerException("method");
         }
@@ -49,7 +48,7 @@ public abstract class Requester<T> {
         }
     }
 
-    public Requester(@NonNull String method, String restPath, @NonNull TypeToken<? extends T> responseType) {
+    public Requester(@NonNull String method, String restPath, @NonNull TypeReference<? extends T> responseType) {
         this(method, restPath, null, responseType);
         if (responseType == null) {
             throw new NullPointerException("responseType");
@@ -118,17 +117,33 @@ public abstract class Requester<T> {
                         return null;
                     }
 
+                    if (supplementForDeserialization != null) {
+                        return JSON.readerFor(responseClass)
+                                .with(
+                                        new InjectableValues.Std()
+                                                .addValue(
+                                                        responseClass.toString(), supplementForDeserialization))
+                                .readValue(responseValue);
+                    }
+                    return JSON.readValue(responseValue, responseClass);
+                } else {
 //                    if (supplementForDeserialization != null) {
-//                        return JSON.readerFor(responseClass)
-//                                .with(new InjectableValues
-//                                        .Std()
+//                        String supplementKey = responseType.getType().toString();
+//                        if (responseType.getType() instanceof ParameterizedType) {
+//                            Type[] actualTypes = ((ParameterizedType) responseType.getType()).getActualTypeArguments();
+//                            if (actualTypes.length == 1 && actualTypes[0] instanceof Class<?>) {
+//                                supplementKey = actualTypes[0].toString();
+//                            }
+//                        }
 //
-//                                        .addValue(responseClass, supplementForDeserialization))
+//                        return JSON.readerFor(responseType.getRawType())
+//                                .with(new InjectableValues.Std()
+//                                        .addValue(supplementKey, supplementForDeserialization))
 //                                .readValue(responseStream);
 //                    }
-                    return new Gson().fromJson(responseValue, responseClass);
-                } else {
-                    return new Gson().fromJson(responseValue, responseType.getType());
+//
+//                    return JSON.readValue(responseStream,  responseType);
+                    return null;
                 }
             }
         } catch (IOException e) {

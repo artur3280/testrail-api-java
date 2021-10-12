@@ -8,7 +8,6 @@ import qa.tools.testraill.models.fields.CaseField;
 import qa.tools.testraill.models.fields.ResultField;
 import qa.tools.testraill.models.sections.Section;
 import qa.tools.testraill.models.sections.SectionsList;
-import qa.tools.testraill.models.suites.Suite;
 
 import java.util.List;
 

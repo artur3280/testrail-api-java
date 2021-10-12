@@ -9,6 +9,8 @@ import qa.tools.testraill.TestRail;
 import qa.tools.testraill.core.internal.UrlConnectionFactory;
 
 import java.io.*;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
@@ -127,23 +129,22 @@ public abstract class Requester<T> {
                     }
                     return JSON.readValue(responseValue, responseClass);
                 } else {
-//                    if (supplementForDeserialization != null) {
-//                        String supplementKey = responseType.getType().toString();
-//                        if (responseType.getType() instanceof ParameterizedType) {
-//                            Type[] actualTypes = ((ParameterizedType) responseType.getType()).getActualTypeArguments();
-//                            if (actualTypes.length == 1 && actualTypes[0] instanceof Class<?>) {
-//                                supplementKey = actualTypes[0].toString();
-//                            }
-//                        }
-//
-//                        return JSON.readerFor(responseType.getRawType())
-//                                .with(new InjectableValues.Std()
-//                                        .addValue(supplementKey, supplementForDeserialization))
-//                                .readValue(responseStream);
-//                    }
-//
-//                    return JSON.readValue(responseStream,  responseType);
-                    return null;
+                    if (supplementForDeserialization != null) {
+                        String supplementKey = responseType.getType().toString();
+                        if (responseType.getType() instanceof ParameterizedType) {
+                            Type[] actualTypes = ((ParameterizedType) responseType.getType()).getActualTypeArguments();
+                            if (actualTypes.length == 1 && actualTypes[0] instanceof Class<?>) {
+                                supplementKey = actualTypes[0].toString();
+                            }
+                        }
+
+                        return JSON.readerFor(responseType)
+                                .with(new InjectableValues.Std()
+                                        .addValue(supplementKey, supplementForDeserialization))
+                                .readValue(responseValue);
+                    }
+
+                    return JSON.readValue(responseValue,  responseType);
                 }
             }
         } catch (IOException e) {

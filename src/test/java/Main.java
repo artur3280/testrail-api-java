@@ -49,5 +49,11 @@ public class Main {
         tCase.setSuiteId(sId);
         Case caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
         System.out.println(caset);
+
+        tCase = new Case();
+        tCase.setTitle("Test case from new API2");
+        tCase.setSuiteId(sId);
+        caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
+        System.out.println(caset);
     }
 }

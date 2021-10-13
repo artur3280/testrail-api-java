@@ -22,10 +22,10 @@ public class Main {
     @SneakyThrows
     public static void main(String[] args) {
         Credentials credentials = new Credentials();
-        credentials.setUsername("ognezdyonova@healthrecoverysolutions.com");
-        credentials.setPassword("Indus@2313");
-        credentials.setBaseUrl("https://hrs.testrail.net/");
-        credentials.setAppName("Test.project.for.refactoring[do_not_using]");
+        credentials.setUsername("******.com");
+        credentials.setPassword("**@2313");
+        credentials.setBaseUrl("ht***/");
+        credentials.setAppName("T**[do_not_using]");
 
         Integer pId=9;
         Integer sId=1351;

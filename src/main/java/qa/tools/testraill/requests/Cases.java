@@ -36,13 +36,6 @@ public class Cases {
         return new List(projectId, caseFields);
     }
 
-    public List list(@NonNull Integer projectId, @NonNull Integer suiteId, @NonNull Integer limit, java.util.List<CaseField> caseFields) {
-        checkArgument(projectId > 0, "Project ID must be greater than zero");
-        checkArgument(suiteId > 0, "Suite ID must be greater than zero");
-        checkArgument(limit > 0, "Limit ID must be greater than zero");
-        return new List(projectId, suiteId, limit, caseFields);
-    }
-
     public List list(@NonNull Integer projectId, @NonNull Integer suiteId, java.util.List<CaseField> caseFields) {
         checkArgument(projectId > 0, "Project ID must be greater than zero");
         checkArgument(suiteId > 0, "Suite ID must be greater than zero");
@@ -63,7 +56,7 @@ public class Cases {
     }
 
     public static class List extends Requester<CasesList> {
-        private static final String REST_PATH = "get_case/%s";
+        private static final String REST_PATH = "get_cases/%s";
         private final java.util.List<CaseField> caseFields;
 
         public List(@NonNull Integer project, java.util.List<CaseField> caseFields) {
@@ -73,11 +66,6 @@ public class Cases {
 
         public List(@NonNull Integer project, @NonNull Integer suite, java.util.List<CaseField> caseFields) {
             super("GET", String.format(REST_PATH.concat("&suite_id=%s"), project, suite), CasesList.class);
-            this.caseFields = caseFields;
-        }
-
-        public List(@NonNull Integer project, @NonNull Integer suite, @NonNull Integer limit, java.util.List<CaseField> caseFields) {
-            super("GET", String.format(REST_PATH.concat("&suite_id=%s").concat("&limit=%s"), project, suite, limit), CasesList.class);
             this.caseFields = caseFields;
         }
 

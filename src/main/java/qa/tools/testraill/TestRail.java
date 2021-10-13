@@ -50,8 +50,16 @@ public class TestRail {
         return new Suites();
     }
 
+    public Runs runs() {
+        return new Runs();
+    }
+
     public Cases cases() {
         return new Cases();
+    }
+
+    public Results results() {
+        return new Results();
     }
 
     public Sections sections() {

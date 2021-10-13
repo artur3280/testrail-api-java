@@ -49,7 +49,6 @@ public class Suites {
             super("GET", String.format(REST_PATH, projectId), new TypeReference<java.util.List<Suite>>() {
             });
         }
-
     }
 
     public static class Add extends Requester<Suite> {

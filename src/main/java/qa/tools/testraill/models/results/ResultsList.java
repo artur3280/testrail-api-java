@@ -1,4 +1,4 @@
-package qa.tools.testraill.models.cases;
+package qa.tools.testraill.models.results;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,9 +19,9 @@ import java.util.List;
         "limit",
         "size",
         "_links",
-        "cases"
+        "results"
 })
-public class CasesList {
+public class ResultsList {
     @JsonProperty("offset")
     private Integer offset;
     @JsonProperty("limit")
@@ -30,6 +30,6 @@ public class CasesList {
     private Integer size;
     @JsonProperty("_links")
     private Links links;
-    @JsonProperty("cases")
-    private List<Case> cases;
+    @JsonProperty("results")
+    private List<Result> results;
 }

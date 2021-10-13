@@ -9,12 +9,10 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializer;
 import com.google.common.base.MoreObjects;
 import lombok.*;
 import qa.tools.testraill.core.internal.ListToCsvSerializer;
+import qa.tools.testraill.requests.Cases;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -22,7 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "created_by",
         "created_on",
@@ -59,6 +57,7 @@ public class Case {
     @JsonProperty("custom_steps_separated")
     private List<CustomStepsSeparated> customStepsSeparated = null;
     @JsonProperty("estimate")
+    @JsonView({Cases.Add.class, Cases.Update.class})
     private String estimate;
     @JsonProperty("estimate_forecast")
     private Object estimateForecast;
@@ -66,27 +65,36 @@ public class Case {
     private Integer id;
     @JsonProperty("milestone_id")
     @JsonSerialize(using = ListToCsvSerializer.class)
+    @JsonView({Cases.Add.class, Cases.Update.class})
     private Integer milestoneId;
     @JsonProperty("priority_id")
     @JsonSerialize(using = ListToCsvSerializer.class)
+    @JsonView({Cases.Add.class, Cases.Update.class})
     private Integer priorityId;
     @JsonProperty("refs")
+    @JsonView({Cases.Add.class, Cases.Update.class})
     private String refs;
     @JsonProperty("section_id")
     private Integer sectionId;
     @JsonProperty("suite_id")
     private Integer suiteId;
     @JsonProperty("title")
+    @JsonView({Cases.Add.class, Cases.Update.class})
     private String title;
     @JsonProperty("type_id")
     @JsonSerialize(using = ListToCsvSerializer.class)
+    @JsonView({Cases.Add.class, Cases.Update.class})
     private Integer typeId;
     @JsonProperty("updated_by")
     @JsonSerialize(using = ListToCsvSerializer.class)
     private Integer updatedBy;
     @JsonProperty("updated_on")
     private Integer updatedOn;
+    @JsonProperty("template_id")
+    @JsonView({Cases.Add.class, Cases.Update.class})
+    private Integer templateId;
 
+    @JsonView({Cases.Add.class, Cases.Update.class})
     @JsonIgnore
     private Map<String, Object> customFields;
     @JsonAnyGetter
@@ -116,14 +124,6 @@ public class Case {
         }
     }
 
-    /**
-     * Get custom field.
-     * <p>Use Java Type Inference, to get the value with correct type. Refer to {@link Type} for a map of TestRail field types to Java types.</p>
-     *
-     * @param key the system name of custom field
-     * @param <T> the type of returned value
-     * @return the value of the custom field
-     */
     public <T> T getCustomField(String key) {
         return (T)getCustomFields().get(key);
     }

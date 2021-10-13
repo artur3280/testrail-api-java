@@ -30,14 +30,6 @@ public class Sections {
         return new List(projectId, suiteId);
     }
 
-    public List list(@NonNull Integer projectId, @NonNull Integer suiteId, Integer limit, Integer offset) {
-        checkArgument(projectId > 0, "Project ID must be greater than zero");
-        checkArgument(suiteId > 0, "Suite ID must be greater than zero");
-        checkArgument(limit >= 0, "Limit ID must be greater equals than zero");
-        checkArgument(offset >= 0, "Offset ID must be greater or equals than zero");
-        return new List(projectId, suiteId, limit, offset);
-    }
-
     public Delete delete(@NonNull Integer sectionId) {
         checkArgument(sectionId > 0, "Section ID must be greater than zero");
         return new Delete(sectionId);
@@ -66,10 +58,6 @@ public class Sections {
         public List(@NonNull Integer projectId) {
             super("GET", String.format(REST_PATH, projectId), SectionsList.class);
         }
-
-        public List(@NonNull Integer projectId, @NonNull Integer suiteId, Integer limit, Integer offset) {
-            super("GET", String.format(REST_PATH.concat("&suite_id=%s&limit=%s&offset=%s"), projectId, suiteId, limit, offset), SectionsList.class);
-        }
     }
 
     public static class Add extends Requester<Section> {
@@ -92,9 +80,9 @@ public class Sections {
         private static final String REST_PATH = "update_section/%s";
         private final Section section;
 
-        public Update(@NonNull Integer sectionId, @NonNull Section suite) {
+        public Update(@NonNull Integer sectionId, @NonNull Section section) {
             super("POST", String.format(REST_PATH, sectionId), Section.class);
-            this.section = suite;
+            this.section = section;
         }
 
         @Override

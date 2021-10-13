@@ -22,10 +22,10 @@ public class Main {
     @SneakyThrows
     public static void main(String[] args) {
         Credentials credentials = new Credentials();
-        credentials.setUsername("******.com");
-        credentials.setPassword("**@2313");
-        credentials.setBaseUrl("ht***/");
-        credentials.setAppName("T**[do_not_using]");
+        credentials.setUsername("");
+        credentials.setPassword("");
+        credentials.setBaseUrl("");
+        credentials.setAppName("");
 
         Integer pId=9;
         Integer sId=1351;

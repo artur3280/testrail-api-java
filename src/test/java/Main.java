@@ -21,16 +21,12 @@ import java.util.List;
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
-        Credentials credentials = new Credentials();
-        credentials.setUsername("");
-        credentials.setPassword("");
-        credentials.setBaseUrl("");
-        credentials.setAppName("");
-
         Integer pId=9;
         Integer sId=1351;
 
-        TestRail testRail = new TestRail(credentials);
+
+
+        TestRail testRail = new TestRail(new Credentials("./tr.properties"));
         List<CaseField> customCaseFields = testRail.caseFields().list().execute();
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
 

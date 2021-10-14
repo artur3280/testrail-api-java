@@ -2,8 +2,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
+import org.apache.logging.log4j.Level;
 import qa.tools.testraill.TestRail;
 import qa.tools.testraill.core.Credentials;
+import qa.tools.testraill.core.CustomLogger;
 import qa.tools.testraill.core.internal.CaseStatus;
 import qa.tools.testraill.models.cases.Case;
 import qa.tools.testraill.models.fields.CaseField;
@@ -24,46 +26,45 @@ public class Main {
         Integer pId=9;
         Integer sId=1351;
 
-
-
         TestRail testRail = new TestRail(new Credentials("./tr.properties"));
+        CustomLogger.log.info("Connection");
         List<CaseField> customCaseFields = testRail.caseFields().list().execute();
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
 
 
         SectionsList sections = testRail.sections().list(pId, sId).execute();
-        System.out.println(new Gson().toJson(sections));
+//        System.out.println(new Gson().toJson(sections));
 
         Section section8 = testRail.sections().get(sections.getSections().get(0).getId()).execute();
-        System.out.println(new Gson().toJson(section8));
+//        System.out.println(new Gson().toJson(section8));
 
         Section section = new Section();
         section.setName("test section");
         section.setSuiteId(sId);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(objectMapper.writeValueAsString(section));
+//        System.out.println(objectMapper.writeValueAsString(section));
 
-        System.out.println(new Gson().toJson(section));
+//        System.out.println(new Gson().toJson(section));
         Integer sectionId = testRail.sections().add(pId, section).execute().getId();
 
         Case tCase = new Case();
         tCase.setTitle("Test case from new API");
         tCase.setSuiteId(sId);
         Case caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
-        System.out.println(caset);
+//        System.out.println(caset);
 
         tCase = new Case();
         tCase.setTitle("Test case from new API2");
         tCase.setSuiteId(sId);
         caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
-        System.out.println(caset);
+//        System.out.println(caset);
 
         RunsList runs = testRail.runs().list(pId).queryParam("is_completed", 1).execute();
-        System.out.println(new ObjectMapper().writeValueAsString(runs));
+//        System.out.println(new ObjectMapper().writeValueAsString(runs));
 
         Run run = testRail.runs().get(runs.getRuns().get(0).getId()).execute();
-        System.out.println(new ObjectMapper().writeValueAsString(run));
+//        System.out.println(new ObjectMapper().writeValueAsString(run));
 
         Run newRun =  new Run();
         newRun.setName("Testrun from api");
@@ -83,14 +84,15 @@ public class Main {
         });
 
         resultsList.setResults(resultList);
-        System.out.println(new ObjectMapper().writeValueAsString(resultsList));
+//        System.out.println(new ObjectMapper().writeValueAsString(resultsList));
         List<Result> t = testRail.results()
                 .addForCases(run.getId(), resultsList, customResultFields)
                 .execAs().as(new TypeReference<List<Result>>() {
                 });
         t.forEach(r->{
-            System.out.println(r.getId());
+//            System.out.println(r.getId());
         });
 
     }
+
 }

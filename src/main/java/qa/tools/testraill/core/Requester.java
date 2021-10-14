@@ -90,7 +90,7 @@ public abstract class Requester<T> {
                 }
             }
 
-            System.out.println("Sending " + method + " request to URL : " + url);
+            CustomLogger.log.debug("Sending " + method + " request to URL : " + url);
             int responseCode = 0;
             try {
                 responseCode = con.getResponseCode();
@@ -98,7 +98,7 @@ public abstract class Requester<T> {
                 responseCode = con.getResponseCode();
             }
 
-            System.out.println("Response Code : " + responseCode);
+            CustomLogger.log.debug("Response Code : " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 try (InputStream errorStream = con.getErrorStream()) {
@@ -116,7 +116,7 @@ public abstract class Requester<T> {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                System.out.println(responseValue);
+                CustomLogger.log.debug(responseValue);
                 Object supplementForDeserialization = getSupplementForDeserialization();
 
                 if (responseClass != null) {
@@ -161,7 +161,7 @@ public abstract class Requester<T> {
                 }
             }
 
-            System.out.println("Sending " + method + " request to URL : " + url);
+            CustomLogger.log.debug("Sending " + method + " request to URL : " + url);
             int responseCode = 0;
             try {
                 responseCode = con.getResponseCode();
@@ -169,7 +169,7 @@ public abstract class Requester<T> {
                 responseCode = con.getResponseCode();
             }
 
-            System.out.println("Response Code : " + responseCode);
+            CustomLogger.log.debug("Response Code : " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 try (InputStream errorStream = con.getErrorStream()) {
@@ -188,7 +188,7 @@ public abstract class Requester<T> {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                System.out.println(responseForMap);
+                CustomLogger.log.debug(responseForMap);
                 return this;
             }
         } catch (IOException e) {

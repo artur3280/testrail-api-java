@@ -3,3 +3,6 @@
 /out/
 /out/production/classes/
 /out/test/classes/
+/deploy-key/
+/gradle.properties
+/secring.gpg

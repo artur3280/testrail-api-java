@@ -24,9 +24,7 @@ public class Field {
 
     /**
      * TestRail type of field.
-     * <p>
      * Map of TestRail field types to their corresponding Java types:
-     * <pre>
      * STRING -- java.lang.String
      * INTEGER -- java.lang.Integer
      * TEXT -- java.lang.String
@@ -36,11 +34,9 @@ public class Field {
      * USER -- java.lang.Integer
      * DATE -- java.lang.String
      * MILESTONE -- java.lang.Integer
-     * STEPS -- java.util.List<{@link Step}>
-     * STEP_RESULTS -- java.util.List<{@link StepResult}>
-     * MULTI_SELECT -- java.util.List<String>
-     * </pre>
-     * </p>
+     * STEPS
+     * STEP_RESULTS
+     * MULTI_SELECT
      */
     public static enum Type {
         UNKNOWN(Config.Options.class, new TypeReference<Object>() {

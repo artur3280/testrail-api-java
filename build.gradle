@@ -2,11 +2,98 @@ plugins {
     id 'java'
 }
 
-group 'qa.tools'
-version '1.0-SNAPSHOT'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group 'io.github.artur3280'
+archivesBaseName = "TestRail-Api"
+version '0.5.0'
+
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
 repositories {
     mavenCentral()
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+task buildJar(type: Jar) {
+    zip64 = true
+    manifest {
+        attributes 'Implementation-Title': 'TestRaill-API',
+                'Implementation-Version': version
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.testCompile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from sourceSets.test.output
+
+    archiveBaseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: 'gas09101990', password: 'Ekaterina09101990@')
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: 'gas09101990', password: 'Ekaterina09101990@')
+            }
+
+            pom.project {
+                name 'TestRail-Api'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'This plugin improves user experience with the official TestRail SDK.'
+                url 'https://github.com/artur3280/testrail-api-java'
+
+                scm {
+                    connection 'scm:git:git://github.com/artur3280/testrail-api-java.git'
+                    developerConnection 'scm:git:git://github.com/artur3280/testrail-api-java.git'
+                    url 'https://github.com/artur3280/testrail-api-java'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'artur3280'
+                        name 'Hnunian Artur'
+                        email 'artur3280@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -26,8 +113,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.16'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+    compile 'org.projectlombok:lombok:1.18.16'
+    compile 'org.projectlombok:lombok:1.18.16'
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.0'

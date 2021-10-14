@@ -26,7 +26,7 @@ public class Main {
         Integer pId=9;
         Integer sId=1351;
 
-        TestRail testRail = new TestRail(new Credentials("./tr.properties"));
+        TestRail testRail = new TestRail(new Credentials("./tr.properties"), Level.DEBUG);
         CustomLogger.log.info("Connection");
         List<CaseField> customCaseFields = testRail.caseFields().list().execute();
         List<ResultField> customResultFields = testRail.resultFields().list().execute();

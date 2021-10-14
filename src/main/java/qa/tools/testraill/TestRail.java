@@ -1,7 +1,14 @@
 package qa.tools.testraill;
 
 import lombok.NonNull;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.codehaus.plexus.logging.console.ConsoleLogger;
 import qa.tools.testraill.core.Credentials;
+import qa.tools.testraill.core.CustomLogger;
 import qa.tools.testraill.requests.*;
 
 public class TestRail {
@@ -11,6 +18,7 @@ public class TestRail {
     private static String appName;
 
     public TestRail(@NonNull Credentials credentials) {
+        new CustomLogger();
         if (!credentials.getBaseUrl().endsWith("/")) {
             credentials.setBaseUrl(credentials.getBaseUrl().concat("/"));
         }
@@ -19,6 +27,24 @@ public class TestRail {
         token = credentials.token();
         url = credentials.getBaseUrl();
         appName = credentials.getAppName();
+    }
+
+    public TestRail(@NonNull Credentials credentials, Level level) {
+        mode(level);
+
+        if (!credentials.getBaseUrl().endsWith("/")) {
+            credentials.setBaseUrl(credentials.getBaseUrl().concat("/"));
+        }
+
+        credentials.setBaseUrl(credentials.getBaseUrl().concat(DEFAULT_PATH));
+        token = credentials.token();
+        url = credentials.getBaseUrl();
+        appName = credentials.getAppName();
+    }
+
+    private void mode(Level level){
+        new CustomLogger(level);
+        CustomLogger.log.info("New level ".concat(level.name()));
     }
 
     public static String token() {

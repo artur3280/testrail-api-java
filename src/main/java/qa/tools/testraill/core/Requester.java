@@ -72,6 +72,8 @@ public abstract class Requester<T> {
                 con.setRequestProperty("User-Agent", TestRail.appName());
             }
 
+            CustomLogger.log.debug("User token:".concat(TestRail.token()));
+
             con.setRequestProperty("Content-Type", "application/json");
             con.addRequestProperty("x-api-ident", "beta");
             con.setRequestProperty("Authorization", TestRail.token());
@@ -90,7 +92,9 @@ public abstract class Requester<T> {
                 }
             }
 
-            CustomLogger.log.debug("Sending " + method + " request to URL : " + url);
+            CustomLogger.log.debug("\nRequest: ".concat(method).concat(":").concat(url)
+                    .concat("\n").concat(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(getContent())));
+
             int responseCode = 0;
             try {
                 responseCode = con.getResponseCode();
@@ -98,9 +102,11 @@ public abstract class Requester<T> {
                 responseCode = con.getResponseCode();
             }
 
-            CustomLogger.log.debug("Response Code : " + responseCode);
+            CustomLogger.log.debug("\nStatus code:" + JSON.writerWithDefaultPrettyPrinter().writeValueAsString(responseCode));
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
+                CustomLogger.log.debug("\nStatus code:" + JSON.writerWithDefaultPrettyPrinter().writeValueAsString(responseCode));
+
                 try (InputStream errorStream = con.getErrorStream()) {
                     APIException.Builder exceptionBuilder = new APIException.Builder().setResponseCode(responseCode);
                     if (errorStream == null) {
@@ -116,7 +122,10 @@ public abstract class Requester<T> {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                CustomLogger.log.debug(responseValue);
+                CustomLogger.log.debug("\nResponse:" +
+                        JSON.writerWithDefaultPrettyPrinter()
+                                .writeValueAsString(JSON.readValue(responseValue, Object.class)));
+
                 Object supplementForDeserialization = getSupplementForDeserialization();
 
                 if (responseClass != null) {
@@ -143,6 +152,8 @@ public abstract class Requester<T> {
                 con.setRequestProperty("User-Agent", TestRail.appName());
             }
 
+            CustomLogger.log.debug("User token:".concat(TestRail.token()));
+
             con.setRequestProperty("Content-Type", "application/json");
             con.addRequestProperty("x-api-ident", "beta");
             con.setRequestProperty("Authorization", TestRail.token());
@@ -161,7 +172,9 @@ public abstract class Requester<T> {
                 }
             }
 
-            CustomLogger.log.debug("Sending " + method + " request to URL : " + url);
+            CustomLogger.log.debug("\nRequest: ".concat(method).concat(":").concat(url)
+                    .concat("\n").concat(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(getContent())));
+
             int responseCode = 0;
             try {
                 responseCode = con.getResponseCode();
@@ -169,9 +182,11 @@ public abstract class Requester<T> {
                 responseCode = con.getResponseCode();
             }
 
-            CustomLogger.log.debug("Response Code : " + responseCode);
+            CustomLogger.log.debug("\nStatus code:" + JSON.writerWithDefaultPrettyPrinter().writeValueAsString(responseCode));
 
             if (responseCode != HttpURLConnection.HTTP_OK) {
+                CustomLogger.log.debug("\nStatus code:" + JSON.writerWithDefaultPrettyPrinter().writeValueAsString(responseCode));
+
                 try (InputStream errorStream = con.getErrorStream()) {
                     APIException.Builder exceptionBuilder = new APIException.Builder().setResponseCode(responseCode);
                     if (errorStream == null) {
@@ -188,7 +203,8 @@ public abstract class Requester<T> {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                CustomLogger.log.debug(responseForMap);
+                CustomLogger.log.debug("\nResponse:" + JSON.writerWithDefaultPrettyPrinter().writeValueAsString(JSON.readValue(responseForMap, Object.class)));
+
                 return this;
             }
         } catch (IOException e) {
@@ -196,16 +212,16 @@ public abstract class Requester<T> {
         }
     }
 
-     @SneakyThrows
-     public <T> T as(Class<T> cls){
-        if(responseForMap==null)
+    @SneakyThrows
+    public <T> T as(Class<T> cls) {
+        if (responseForMap == null)
             throw new NullPointerException("Response is null");
         return JSON.readValue(responseForMap, cls);
     }
 
     @SneakyThrows
-    public <T> T as(TypeReference<T> typeRef){
-        if(responseForMap==null)
+    public <T> T as(TypeReference<T> typeRef) {
+        if (responseForMap == null)
             throw new NullPointerException("Response is null");
         return JSON.readValue(responseForMap, typeRef);
     }
@@ -240,7 +256,6 @@ public abstract class Requester<T> {
         }
         return JSON.readValue(responseValue, responseClass);
     }
-
 
 
     private String getUrl() throws IOException {

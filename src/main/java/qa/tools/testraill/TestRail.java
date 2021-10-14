@@ -2,11 +2,6 @@ package qa.tools.testraill;
 
 import lombok.NonNull;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 import qa.tools.testraill.core.Credentials;
 import qa.tools.testraill.core.CustomLogger;
 import qa.tools.testraill.requests.*;

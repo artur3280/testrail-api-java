@@ -7,7 +7,7 @@ apply plugin: 'signing'
 
 group 'io.github.artur3280'
 archivesBaseName = "TestRail-Api"
-version '0.5.0'
+version '0.5.8'
 
 
 task javadocJar(type: Jar) {

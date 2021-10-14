@@ -93,7 +93,8 @@ public abstract class Requester<T> {
             }
 
             CustomLogger.log.debug("\nRequest: ".concat(method).concat(":").concat(url)
-                    .concat("\n").concat(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(getContent())));
+                    .concat("\n")
+                    .concat(getContent() != null ? JSON.writerWithDefaultPrettyPrinter().writeValueAsString(getContent()) : "<body empty>"));
 
             int responseCode = 0;
             try {
@@ -173,7 +174,8 @@ public abstract class Requester<T> {
             }
 
             CustomLogger.log.debug("\nRequest: ".concat(method).concat(":").concat(url)
-                    .concat("\n").concat(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(getContent())));
+                    .concat("\n")
+                    .concat(getContent() != null ? JSON.writerWithDefaultPrettyPrinter().writeValueAsString(getContent()) : "<body empty>"));
 
             int responseCode = 0;
             try {

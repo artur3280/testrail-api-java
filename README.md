@@ -61,3 +61,24 @@ t.forEach(r->{
 
 #### At the moment, requests have been made to:_Cases,Projects,Results,Runs,Sections, Suites_ 
 
+### Version 0.6.1
+In the new version of this plugin, you can backup data to local storage. This should be useful 
+for generating artifacts in docker to manually start sending data to the server.
+
+```java
+Backup backup = new Backup(resultList);
+// Save by default path './artifact/data_backup.json'
+backup.saveToLocal();
+
+// Save by new path
+backup.saveToLocal("./new_path");
+
+// Save by new path and with new name
+backup.saveToLocal("./new_path", "new_file");
+
+///Also you can convert the json from file to the Object
+List<Result> test = backup.asObject(new TypeReference<List<Result>>() {});
+Result test = backup.asObject(Result.class);
+
+```
+

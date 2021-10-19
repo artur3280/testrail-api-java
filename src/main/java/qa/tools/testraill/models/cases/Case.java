@@ -45,7 +45,7 @@ public class Case {
     private static final String CUSTOM_FIELD_KEY_PREFIX = "custom_";
     @JsonProperty("created_by")
     @JsonSerialize(using = ListToCsvSerializer.class)
-    private Integer createdBy;
+    private java.util.List<Integer> createdBy;
     @JsonProperty("created_on")
     private Integer createdOn;
     @JsonProperty("custom_expected")
@@ -66,11 +66,11 @@ public class Case {
     @JsonProperty("milestone_id")
     @JsonSerialize(using = ListToCsvSerializer.class)
     @JsonView({Cases.Add.class, Cases.Update.class})
-    private Integer milestoneId;
+    private java.util.List<Integer> milestoneId;
     @JsonProperty("priority_id")
     @JsonSerialize(using = ListToCsvSerializer.class)
     @JsonView({Cases.Add.class, Cases.Update.class})
-    private Integer priorityId;
+    private List<Integer> priorityId;
     @JsonProperty("refs")
     @JsonView({Cases.Add.class, Cases.Update.class})
     private String refs;
@@ -84,10 +84,10 @@ public class Case {
     @JsonProperty("type_id")
     @JsonSerialize(using = ListToCsvSerializer.class)
     @JsonView({Cases.Add.class, Cases.Update.class})
-    private Integer typeId;
+    private List<Integer> typeId;
     @JsonProperty("updated_by")
     @JsonSerialize(using = ListToCsvSerializer.class)
-    private Integer updatedBy;
+    private List<Integer> updatedBy;
     @JsonProperty("updated_on")
     private Integer updatedOn;
     @JsonProperty("template_id")

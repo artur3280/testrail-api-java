@@ -12,6 +12,7 @@ import qa.tools.testraill.requests.Runs;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -63,8 +64,8 @@ public class Run {
     private String config;
     @JsonProperty("config_ids")
     private List<Integer> configIds = null;
-    @JsonProperty("created_by")
-    private Integer createdBy;
+    @JsonSerialize(using = ListToCsvSerializer.class)
+    private List<Integer> createdBy;
     @JsonProperty("created_on")
     private Integer createdOn;
     @JsonProperty("refs")
@@ -97,7 +98,8 @@ public class Run {
     private Boolean isCompleted;
     @JsonProperty("milestone_id")
     @JsonView({Runs.Add.class, Runs.Update.class})
-    private Integer milestoneId;
+    @JsonSerialize(using = ListToCsvSerializer.class)
+    private List<Integer> milestoneId;
     @JsonProperty("name")
     @JsonView({Runs.Add.class, Runs.Update.class})
     private String name;
@@ -111,7 +113,8 @@ public class Run {
     private Integer retestCount;
     @JsonProperty("suite_id")
     @JsonView({Runs.Add.class, Runs.Update.class})
-    private Integer suiteId;
+    @JsonSerialize(using = ListToCsvSerializer.class)
+    private List<Integer> suiteId;
     @JsonProperty("untested_count")
     private Integer untestedCount;
     @JsonProperty("updated_on")

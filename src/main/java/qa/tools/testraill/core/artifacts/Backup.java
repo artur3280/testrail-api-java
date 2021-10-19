@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NonNull;
 
 public class Backup {
-    private final Object objectClass;
+    private Object objectClass;
 
     public Backup(@NonNull Object object) {
         this.objectClass = object;
+    }
+
+    public Backup() {
     }
 
     public void saveToLocal() {

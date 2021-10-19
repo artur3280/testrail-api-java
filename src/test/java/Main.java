@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Level;
 import qa.tools.testraill.TestRail;
 import qa.tools.testraill.core.Credentials;
 import qa.tools.testraill.core.CustomLogger;
-import qa.tools.testraill.core.artifacts.Backup;
 import qa.tools.testraill.core.internal.CaseStatus;
 import qa.tools.testraill.models.cases.Case;
 import qa.tools.testraill.models.fields.CaseField;

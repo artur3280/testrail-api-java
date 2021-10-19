@@ -6,3 +6,8 @@
 /deploy-key/
 /gradle.properties
 /secring.gpg
+/tr.properties
+/.gitignore
+/.idea/
+/gradle/
+/artifact/

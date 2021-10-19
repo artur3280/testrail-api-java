@@ -82,3 +82,8 @@ Result test = backup.asObject(Result.class);
 
 ```
 
+### Version 0.6.2
+In the new version of this plugin, you can make empty backup class instance. 
+Also fixed some models for the data response.
+
+

@@ -113,8 +113,7 @@ public class Run {
     private Integer retestCount;
     @JsonProperty("suite_id")
     @JsonView({Runs.Add.class, Runs.Update.class})
-    @JsonSerialize(using = ListToCsvSerializer.class)
-    private List<Integer> suiteId;
+    private Integer suiteId;
     @JsonProperty("untested_count")
     private Integer untestedCount;
     @JsonProperty("updated_on")

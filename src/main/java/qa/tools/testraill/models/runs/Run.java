@@ -64,10 +64,9 @@ public class Run {
     private String config;
     @JsonProperty("config_ids")
     private List<Integer> configIds = null;
-    @JsonSerialize(using = ListToCsvSerializer.class)
-    private List<Integer> createdBy;
+    private Integer createdBy;
     @JsonProperty("created_on")
-    private Integer createdOn;
+    private Long createdOn;
     @JsonProperty("refs")
     private String refs;
     @JsonProperty("custom_status1_count")
@@ -98,8 +97,7 @@ public class Run {
     private Boolean isCompleted;
     @JsonProperty("milestone_id")
     @JsonView({Runs.Add.class, Runs.Update.class})
-    @JsonSerialize(using = ListToCsvSerializer.class)
-    private List<Integer> milestoneId;
+    private Integer milestoneId;
     @JsonProperty("name")
     @JsonView({Runs.Add.class, Runs.Update.class})
     private String name;

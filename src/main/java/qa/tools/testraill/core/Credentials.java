@@ -6,6 +6,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Getter
@@ -23,6 +25,7 @@ public class Credentials {
     private String password;
     @NonNull
     private String appName;
+    private Map<Object, Object> additionalFields = new HashMap<>();
 
     public String token() {
         return "Basic " + DatatypeConverter.printBase64Binary((getUsername() + ":" + getPassword()).getBytes(StandardCharsets.UTF_8));

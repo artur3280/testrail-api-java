@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import qa.tools.testraill.core.CustomLogger;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class ArtifactsWorker<T> {
     private Object objectClass;
@@ -32,9 +33,10 @@ public class ArtifactsWorker<T> {
     public void saveLocal() {
         String path = "./artifact/".concat(KEY_PREFIX).concat("backup.json");
         FileUtils.touch(new File(path));
-        JSON.writer(new DefaultPrettyPrinter())
-                .writeValue(new File(path), this.objectClass);
-        waitToAppear(new File(path));
+        try(OutputStream out = new FileOutputStream(path)) {
+            JSON.writer(new DefaultPrettyPrinter())
+                    .writeValue(out, this.objectClass);
+        }
     }
 
     @SneakyThrows
@@ -45,9 +47,10 @@ public class ArtifactsWorker<T> {
 
         path += KEY_PREFIX.concat("backup.json");
         FileUtils.touch(new File(path));
-        JSON.writer(new DefaultPrettyPrinter())
-                .writeValue(new File(path), this.objectClass);
-        waitToAppear(new File(path));
+        try(OutputStream out = new FileOutputStream(path)) {
+            JSON.writer(new DefaultPrettyPrinter())
+                    .writeValue(out, this.objectClass);
+        }
     }
 
     @SneakyThrows
@@ -62,25 +65,10 @@ public class ArtifactsWorker<T> {
 
         path += KEY_PREFIX.concat(jsonName).concat(".json");
         FileUtils.touch(new File(path));
-        JSON.writer(new DefaultPrettyPrinter())
-                .writeValue(new File(path), this.objectClass);
-        waitToAppear(new File(path));
-    }
-
-    @SneakyThrows
-    private static void waitToAppear(@NonNull File file) {
-        do {
-            CustomLogger.log.info("check file");
-            boolean fileExist = file.exists()
-                    && file.canWrite()
-                    && file.canRead();
-            if(fileExist){
-                break;
-            }else {
-                Thread.sleep(1000);
-            }
-
-        } while (true);
+        try(OutputStream out = new FileOutputStream(path)) {
+            JSON.writer(new DefaultPrettyPrinter())
+                    .writeValue(out, this.objectClass);
+        }
     }
 
     @SneakyThrows

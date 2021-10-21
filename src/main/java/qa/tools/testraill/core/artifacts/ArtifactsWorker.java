@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import qa.tools.testraill.core.CustomLogger;
 
 import java.io.File;
 
@@ -33,6 +34,7 @@ public class ArtifactsWorker<T> {
         FileUtils.touch(new File(path));
         JSON.writer(new DefaultPrettyPrinter())
                 .writeValue(new File(path), this.objectClass);
+        waitToAppear(new File(path));
     }
 
     @SneakyThrows
@@ -45,6 +47,7 @@ public class ArtifactsWorker<T> {
         FileUtils.touch(new File(path));
         JSON.writer(new DefaultPrettyPrinter())
                 .writeValue(new File(path), this.objectClass);
+        waitToAppear(new File(path));
     }
 
     @SneakyThrows
@@ -61,6 +64,23 @@ public class ArtifactsWorker<T> {
         FileUtils.touch(new File(path));
         JSON.writer(new DefaultPrettyPrinter())
                 .writeValue(new File(path), this.objectClass);
+        waitToAppear(new File(path));
+    }
+
+    @SneakyThrows
+    private static void waitToAppear(@NonNull File file) {
+        do {
+            CustomLogger.log.info("check file");
+            boolean fileExist = file.exists()
+                    && file.canWrite()
+                    && file.canRead();
+            if(fileExist){
+                break;
+            }else {
+                Thread.sleep(1000);
+            }
+
+        } while (true);
     }
 
     @SneakyThrows

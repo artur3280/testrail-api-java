@@ -2,6 +2,7 @@ package qa.tools.testraill.core.artifacts;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 
 public class Backup {
     private Object objectClass;
@@ -13,19 +14,33 @@ public class Backup {
     public Backup() {
     }
 
+    @SneakyThrows
     public void saveToLocal() {
-        ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
-        artifact.saveLocal();
+        Thread thread = new Thread(() -> {
+            ArtifactsWorker<Object> artifact = new ArtifactsWorker<>(objectClass);
+            artifact.saveLocal();
+        });
+        thread.start();
+        thread.join();
     }
 
+    @SneakyThrows
     public void saveToLocal(String path) {
-        ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
-        artifact.saveLocal(path);
+        Thread thread = new Thread(() -> {
+            ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
+            artifact.saveLocal(path);
+        });
+        thread.start();
+        thread.join();
     }
 
+    @SneakyThrows
     public void saveToLocal(String path, String fileName) {
-        ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
-        artifact.saveLocal(path, fileName);
+        Thread thread = new Thread(() -> {
+            ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
+            artifact.saveLocal(path, fileName);
+        });
+        thread.start();
     }
 
     public <T> T asObject(@NonNull String path, @NonNull Class<T> cls) {

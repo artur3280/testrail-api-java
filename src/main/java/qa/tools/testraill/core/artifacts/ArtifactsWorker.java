@@ -33,7 +33,7 @@ public class ArtifactsWorker<T> {
     public void saveLocal() {
         String path = "./artifact/".concat(KEY_PREFIX).concat("backup.json");
         FileUtils.touch(new File(path));
-        try(OutputStream out = new FileOutputStream(path)) {
+        try (OutputStream out = new FileOutputStream(path)) {
             JSON.writer(new DefaultPrettyPrinter())
                     .writeValue(out, this.objectClass);
         }
@@ -47,7 +47,7 @@ public class ArtifactsWorker<T> {
 
         path += KEY_PREFIX.concat("backup.json");
         FileUtils.touch(new File(path));
-        try(OutputStream out = new FileOutputStream(path)) {
+        try (OutputStream out = new FileOutputStream(path)) {
             JSON.writer(new DefaultPrettyPrinter())
                     .writeValue(out, this.objectClass);
         }
@@ -65,9 +65,10 @@ public class ArtifactsWorker<T> {
 
         path += KEY_PREFIX.concat(jsonName).concat(".json");
         FileUtils.touch(new File(path));
-        try(OutputStream out = new FileOutputStream(path)) {
+        try (OutputStream out = new FileOutputStream(path)) {
             JSON.writer(new DefaultPrettyPrinter())
                     .writeValue(out, this.objectClass);
+            JSON.readValue(new File(path), this.objectClass.getClass());
         }
     }
 

@@ -21,7 +21,6 @@ public class Backup {
             artifact.saveLocal();
         });
         thread.start();
-        thread.join();
     }
 
     @SneakyThrows
@@ -31,7 +30,6 @@ public class Backup {
             artifact.saveLocal(path);
         });
         thread.start();
-        thread.join();
     }
 
     @SneakyThrows

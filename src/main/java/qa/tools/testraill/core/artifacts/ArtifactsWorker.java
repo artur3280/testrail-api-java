@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,14 +32,12 @@ public class ArtifactsWorker<T> {
 
     public ArtifactsWorker() {
     }
-
     @SneakyThrows
     public void saveLocal() {
         String path = "./artifact/".concat(KEY_PREFIX).concat("backup.json");
         FileUtils.touch(new File(path));
-        try (OutputStream out = Files.newOutputStream(Paths.get(path).toAbsolutePath(), CREATE, READ, WRITE, TRUNCATE_EXISTING)) {
-            JSON.writer(new DefaultPrettyPrinter())
-                    .writeValue(out, this.objectClass);
+        try (OutputStream out = new FileOutputStream(path)) {
+            JSON.writer(new DefaultPrettyPrinter()).writeValue(out, this.objectClass);
         }
     }
 
@@ -50,9 +49,8 @@ public class ArtifactsWorker<T> {
 
         path += KEY_PREFIX.concat("backup.json");
         FileUtils.touch(new File(path));
-        try (OutputStream out = Files.newOutputStream(Paths.get(path).toAbsolutePath(), CREATE, READ, WRITE, TRUNCATE_EXISTING)) {
-            JSON.writer(new DefaultPrettyPrinter())
-                    .writeValue(out, this.objectClass);
+        try (OutputStream out = new FileOutputStream(path)) {
+            JSON.writer(new DefaultPrettyPrinter()).writeValue(out, this.objectClass);
         }
     }
 
@@ -67,9 +65,9 @@ public class ArtifactsWorker<T> {
         }
 
         path += KEY_PREFIX.concat(jsonName).concat(".json");
-        try (OutputStream out = Files.newOutputStream(Paths.get(path).toAbsolutePath(), CREATE, WRITE, TRUNCATE_EXISTING)) {
-            JSON.writer(new DefaultPrettyPrinter())
-                    .writeValue(out, this.objectClass);
+        FileUtils.touch(new File(path));
+        try (OutputStream out = new FileOutputStream(path)) {
+            JSON.writer(new DefaultPrettyPrinter()).writeValue(out, this.objectClass);
         }
     }
 

@@ -16,20 +16,33 @@ public class Backup {
 
     @SneakyThrows
     public void saveToLocal() {
+        Thread thread = new Thread(() -> {
             ArtifactsWorker<Object> artifact = new ArtifactsWorker<>(objectClass);
             artifact.saveLocal();
+
+        });
+        thread.start();
+        thread.join();
     }
 
     @SneakyThrows
     public void saveToLocal(String path) {
+        Thread thread = new Thread(() -> {
             ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
             artifact.saveLocal(path);
+        });
+        thread.start();
+        thread.join();
     }
 
     @SneakyThrows
     public void saveToLocal(String path, String fileName) {
+        Thread thread = new Thread(() -> {
             ArtifactsWorker<Object> artifact = new ArtifactsWorker<Object>(this.objectClass);
             artifact.saveLocal(path, fileName);
+        });
+        thread.start();
+        thread.join();
     }
 
     public <T> T asObject(@NonNull String path, @NonNull Class<T> cls) {

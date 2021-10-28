@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -79,7 +81,9 @@ public class ArtifactsWorker<T> {
         if (path.isEmpty()) {
             throw new NullPointerException("Class is null");
         }
-        return JSON.readValue(new File(path), cls);
+        try (InputStream inputStream = Files.newInputStream(Paths.get(path).toAbsolutePath())) {
+            return JSON.readValue(inputStream, cls);
+        }
     }
 
     @SneakyThrows
@@ -87,7 +91,9 @@ public class ArtifactsWorker<T> {
         if (path.isEmpty()) {
             throw new NullPointerException("typeRef is null");
         }
-        return JSON.readValue(new File(path), typeRef);
+        try (InputStream inputStream = Files.newInputStream(Paths.get(path).toAbsolutePath())) {
+            return JSON.readValue(inputStream, typeRef);
+        }
     }
 
     @SneakyThrows
@@ -96,7 +102,9 @@ public class ArtifactsWorker<T> {
         if (path.isEmpty()) {
             throw new NullPointerException("Class is null");
         }
-        return JSON.readValue(new File(path), cls);
+        try (InputStream inputStream = Files.newInputStream(Paths.get(path).toAbsolutePath())) {
+            return JSON.readValue(inputStream, cls);
+        }
     }
 
     @SneakyThrows
@@ -105,6 +113,9 @@ public class ArtifactsWorker<T> {
         if (path.isEmpty()) {
             throw new NullPointerException("typeRef is null");
         }
-        return JSON.readValue(new File(path), typeRef);
+        try (InputStream inputStream = Files.newInputStream(Paths.get(path).toAbsolutePath())) {
+            return JSON.readValue(inputStream, typeRef);
+        }
+
     }
 }

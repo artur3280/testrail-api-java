@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Level;
 import qa.tools.testraill.TestRail;
 import qa.tools.testraill.core.Credentials;
 import qa.tools.testraill.core.CustomLogger;
+import qa.tools.testraill.core.artifacts.Backup;
 import qa.tools.testraill.core.internal.CaseStatus;
 import qa.tools.testraill.models.cases.Case;
 import qa.tools.testraill.models.fields.CaseField;
@@ -56,13 +57,13 @@ public class Main {
         tCase = new Case();
         tCase.setTitle("Test case from new API2");
         tCase.setSuiteId(sId);
-        caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
+//        caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
 //        System.out.println(caset);
 
         RunsList runs = testRail.runs().list(pId).queryParam("is_completed", 1).execute();
 //        System.out.println(new ObjectMapper().writeValueAsString(runs));
 
-        Run run = testRail.runs().get(runs.getRuns().get(0).getId()).execute();
+        Run run;
 //        System.out.println(new ObjectMapper().writeValueAsString(run));
 
         Run newRun =  new Run();
@@ -91,6 +92,21 @@ public class Main {
         t.forEach(r->{
 //            System.out.println(r.getId());
         });
+
+        List<Run> testRuns = new ArrayList<>();
+        for (int i = 0; i < 100000; i++) {
+            Run newRun2 =  new Run();
+            newRun.setName("Testrun from api");
+            newRun.setSuiteId(sId);
+            newRun.setDescription("testDiscription ");
+            newRun.setIncludeAll(true);
+            testRuns.add(newRun2);
+        }
+
+        new Backup(testRuns).saveToLocal("./artifact", "testfile");
+
+        List<Run> con = new Backup().asObject("./artifact/data_testfile.json", new TypeReference<List<Run>>() {});
+
 
     }
 

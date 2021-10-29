@@ -19,7 +19,8 @@ import java.util.List;
         "limit",
         "size",
         "_links",
-        "cases"
+        "cases",
+        "case_ids"
 })
 public class CasesList {
     @JsonProperty("offset")
@@ -32,4 +33,6 @@ public class CasesList {
     private Links links;
     @JsonProperty("cases")
     private List<Case> cases;
+    @JsonProperty("case_ids")
+    private List<Integer> caseIds;
 }

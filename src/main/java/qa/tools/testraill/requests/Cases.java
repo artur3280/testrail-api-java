@@ -26,6 +26,12 @@ public class Cases {
         return new Delete(caseId);
     }
 
+    public DeleteList delete(@NonNull CasesList cases, @NonNull Integer projectId, @NonNull Integer suiteId) {
+        checkArgument(projectId >= 0, "Project ID must be greater than zero");
+        checkArgument(suiteId >= 0, "Suite ID must be greater than zero");
+        return new DeleteList(cases, projectId, suiteId);
+    }
+
     public Get get(@NonNull Integer caseId) {
         checkArgument(caseId >= 0, "Case ID must be greater than zero");
         return new Get(caseId);
@@ -132,6 +138,21 @@ public class Cases {
 
         public Delete(@NonNull Integer id) {
             super("POST", String.format(REST_PATH, id), Void.class);
+        }
+    }
+
+    public static class DeleteList extends Requester<CasesList> {
+        private static final String REST_PATH = "delete_cases/%s&%s";
+        private final CasesList testCases;
+
+        public DeleteList(@NonNull CasesList testCases, @NonNull Integer project_id, Integer suite_id) {
+            super("POST", String.format(REST_PATH, project_id, suite_id), CasesList.class);
+            this.testCases = testCases;
+        }
+
+        @Override
+        public Object getContent() {
+            return testCases;
         }
     }
 }

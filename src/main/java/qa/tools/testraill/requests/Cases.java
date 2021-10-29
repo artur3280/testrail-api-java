@@ -142,7 +142,7 @@ public class Cases {
     }
 
     public static class DeleteList extends Requester<CasesList> {
-        private static final String REST_PATH = "delete_cases/%s&%s";
+        private static final String REST_PATH = "delete_cases/%s&suite_id=%s";
         private final CasesList testCases;
 
         public DeleteList(@NonNull CasesList testCases, @NonNull Integer project_id, Integer suite_id) {

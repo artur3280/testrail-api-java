@@ -123,9 +123,11 @@ public abstract class Requester<T> {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                CustomLogger.log.debug("\nResponse:" +
-                        JSON.writerWithDefaultPrettyPrinter()
-                                .writeValueAsString(JSON.readValue(responseValue, Object.class)));
+                if (!responseValue.isEmpty()) {
+                    CustomLogger.log.debug("\nResponse:" +
+                            JSON.writerWithDefaultPrettyPrinter()
+                                    .writeValueAsString(JSON.readValue(responseValue, Object.class)));
+                }
 
                 Object supplementForDeserialization = getSupplementForDeserialization();
 
@@ -205,7 +207,11 @@ public abstract class Requester<T> {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                CustomLogger.log.debug("\nResponse:" + JSON.writerWithDefaultPrettyPrinter().writeValueAsString(JSON.readValue(responseForMap, Object.class)));
+                if (!responseForMap.isEmpty()) {
+                    CustomLogger.log.debug("\nResponse:" +
+                            JSON.writerWithDefaultPrettyPrinter()
+                                    .writeValueAsString(JSON.readValue(responseForMap, Object.class)));
+                }
 
                 return this;
             }

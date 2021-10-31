@@ -1,5 +1,4 @@
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.Level;
 import qa.tools.testraill.TestRail;
@@ -8,6 +7,7 @@ import qa.tools.testraill.core.CustomLogger;
 import qa.tools.testraill.core.artifacts.Backup;
 import qa.tools.testraill.core.internal.CaseStatus;
 import qa.tools.testraill.models.cases.Case;
+import qa.tools.testraill.models.cases.CasesList;
 import qa.tools.testraill.models.fields.CaseField;
 import qa.tools.testraill.models.fields.ResultField;
 import qa.tools.testraill.models.results.Result;
@@ -23,59 +23,83 @@ import java.util.List;
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
-        Integer pId=9;
-        Integer sId=1351;
+        Integer pId = 11;
+        Integer sId = 1426;
 
         TestRail testRail = new TestRail(new Credentials("./tr.properties"), Level.DEBUG);
         CustomLogger.log.info("Connection");
+        /**
+         * Get custom fields
+         * @return List<CaseField>
+         * @return List<ResultField>
+         * */
         List<CaseField> customCaseFields = testRail.caseFields().list().execute();
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
 
-
+        /**
+         *Get section list
+         * @param projectId
+         * @param suiteId
+         * @return SectionsList
+         * */
         SectionsList sections = testRail.sections().list(pId, sId).execute();
-//        System.out.println(new Gson().toJson(sections));
 
-        Section section8 = testRail.sections().get(sections.getSections().get(0).getId()).execute();
-//        System.out.println(new Gson().toJson(section8));
+        /**
+         * Get one section
+         * @param suiteId
+         * @return Section
+         * */
+        Section section = testRail.sections().get(sections.getSections().get(0).getId()).execute();
 
-        Section section = new Section();
-        section.setName("test section");
-        section.setSuiteId(sId);
+        /**
+         * Create new section
+         * @param Section
+         * @return sectionId
+         * */
+        Section sectionBody = new Section();
+        sectionBody.setName("test section");
+        sectionBody.setSuiteId(sId);
+        Integer sectionId = testRail.sections().add(pId, sectionBody).execute().getId();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-//        System.out.println(objectMapper.writeValueAsString(section));
-
-//        System.out.println(new Gson().toJson(section));
-        Integer sectionId = testRail.sections().add(pId, section).execute().getId();
-
+        /**
+         * Create new case
+         * @param sectionId
+         * @param Case
+         * @param customCaseFields
+         * @return case
+         * */
         Case tCase = new Case();
         tCase.setTitle("Test case from new API");
         tCase.setSuiteId(sId);
-        Case caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
-//        System.out.println(caset);
+        Case aCase = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
 
-        tCase = new Case();
-        tCase.setTitle("Test case from new API2");
-        tCase.setSuiteId(sId);
-//        caset = testRail.cases().add(sectionId, tCase, customCaseFields).execute();
-//        System.out.println(caset);
-
+        /**
+         * Get list of runs
+         * @param projectId
+         * @return list of runs
+         * */
         RunsList runs = testRail.runs().list(pId).queryParam("is_completed", 1).execute();
-//        System.out.println(new ObjectMapper().writeValueAsString(runs));
 
-        Run run;
-//        System.out.println(new ObjectMapper().writeValueAsString(run));
-
-        Run newRun =  new Run();
+        /**
+         * Create new run
+         * @param Project
+         * @return run
+         * */
+        Run newRun = new Run();
         newRun.setName("Testrun from api");
         newRun.setSuiteId(sId);
         newRun.setDescription("testDiscription ");
         newRun.setIncludeAll(true);
-        run = testRail.runs().add(pId, newRun).execute();
+        Run run = testRail.runs().add(pId, newRun).execute();
 
+        /**
+         * Send results
+         * @param Project
+         * @return run
+         * */
         ResultsList resultsList = new ResultsList();
         List<Result> resultList = new ArrayList<>();
-        testRail.cases().list(pId, sId, customCaseFields).execute().getCases().forEach(c->{
+        testRail.cases().list(pId, sId, customCaseFields).execute().getCases().forEach(c -> {
             Result result = new Result();
             result.setCaseId(c.getId());
             result.setStatusId(CaseStatus.PASSED);
@@ -84,30 +108,49 @@ public class Main {
         });
 
         resultsList.setResults(resultList);
-//        System.out.println(new ObjectMapper().writeValueAsString(resultsList));
-        List<Result> t = testRail.results()
-                .addForCases(run.getId(), resultsList, customResultFields)
+        List<Result> results = testRail.results().addForCases(run.getId(), resultsList, customResultFields)
                 .execAs().as(new TypeReference<List<Result>>() {
                 });
-        t.forEach(r->{
-//            System.out.println(r.getId());
-        });
 
+
+        /**
+         * Save object to local artifact
+         * @param Object
+         * @param patch
+         * @return Void
+         * */
         List<Run> testRuns = new ArrayList<>();
         for (int i = 0; i < 100000; i++) {
-            Run newRun2 =  new Run();
+            Run newRun2 = new Run();
             newRun.setName("Testrun from api");
             newRun.setSuiteId(sId);
             newRun.setDescription("testDiscription ");
             newRun.setIncludeAll(true);
             testRuns.add(newRun2);
         }
+        new Backup(testRuns).saveToLocal("./artifact", "test_file");
 
-        new Backup(testRuns).saveToLocal("./artifact", "testfile");
+        /**
+         * Convert file to object
+         * @param Object
+         * @param patch
+         * @return Void
+         * */
+        List<Run> con = new Backup().asObject("./artifact/data_test_file.json", new TypeReference<List<Run>>() {
+        });
 
-        List<Run> con = new Backup().asObject("./artifact/data_testfile.json", new TypeReference<List<Run>>() {});
-
-
+        /**
+         * Delete list of cases
+         * @param CasesList
+         * @return CasesList
+         * */
+        List<Integer> ids = new ArrayList<>();
+        ids.add(546348);
+        ids.add(546349);
+        ids.add(546350);
+        CasesList l = new CasesList();
+        l.setCaseIds(ids);
+        testRail.cases().delete(l, sId).execute();
     }
 
 }

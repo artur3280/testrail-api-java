@@ -60,7 +60,7 @@ public class Main {
         sectionBody.setName("test section");
         sectionBody.setSuiteId(sId);
         Integer sectionId = testRail.sections().add(pId, sectionBody).execute().getId();
-
+//
         /**
          * Create new case
          * @param sectionId
@@ -144,10 +144,11 @@ public class Main {
          * @param CasesList
          * @return CasesList
          * */
+
         List<Integer> ids = new ArrayList<>();
-        ids.add(546348);
-        ids.add(546349);
-        ids.add(546350);
+        ids.add(553878);
+        ids.add(553879);
+        ids.add(553880);
         CasesList l = new CasesList();
         l.setCaseIds(ids);
         testRail.cases().delete(l, sId).execute();

@@ -131,14 +131,22 @@ public abstract class Requester<T> {
 
                 Object supplementForDeserialization = getSupplementForDeserialization();
 
-                if (responseClass != null) {
-                    if (responseClass == Void.class) {
-                        return null;
+
+                T mappedObject = null;
+                if (!responseValue.isEmpty())
+                    if (responseClass != null) {
+                        if (responseClass == Void.class) {
+                            return null;
+                        }
+
+                        mappedObject = responseClassDeserializer(responseValue, supplementForDeserialization, (Class<? extends T>) responseClass);
+                    } else {
+                        mappedObject = responseTypeDeserializer(responseValue, supplementForDeserialization, (TypeReference<? extends T>) responseType);
                     }
-                    return responseClassDeserializer(responseValue, supplementForDeserialization, (Class<? extends T>) responseClass);
-                } else {
-                    return responseTypeDeserializer(responseValue, supplementForDeserialization, (TypeReference<? extends T>) responseType);
-                }
+                else
+                    CustomLogger.log.debug("Response is empty");
+
+                return mappedObject;
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
